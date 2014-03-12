@@ -25,17 +25,17 @@ int main  (int argc, char* argv[]) {
 			if(line.substr(0,8) == "FoodItem"){
 				// PLACE HOLDER FOR UPC->Food method
 				cout << "Food item found" << endl;
-				helper->build_items(line);
+				helper->add_items(line);
 			}
 			if(line.substr(0,5) == "Start"){
 				// PLACE HOLDER FOR CREATING START DATE
 				cout << "Create start date" << endl;
-				helper->build_date(line);
+				helper->add_date(line);
 			}
 			if(line.substr(0,9) == "Warehouse"){
 				// PLACE HOLDER FOR THE WAREHOUSE METHOD
 				cout << "Warehouse found" << endl;
-				helper->build_warehouse(line);
+				helper->add_warehouse(line);
 			}
 			if(line.substr(0,8) == "Next day"){
 				// PLACE HOLDER FOR CALLING NEXT_DAY METHOD

@@ -11,9 +11,16 @@
 
 namespace inventory {
 	data_helper::data_helper(){
-		
+		this->codeNames;
+		this->shelfLife;
+		this->warehouses;
+		this->startDate;
 	}
-	void data_helper::build_warehouse(std::string input){
+
+	/** Parses the data from the text file and adds a warehouse
+	  * to the warehouses map. 
+	  */
+	void data_helper::add_warehouse(std::string input){
 		std::istringstream is(input);
 		std::string temp;
 		std::string name;
@@ -23,10 +30,14 @@ namespace inventory {
 		is >> name;
 
 		std::cout << name << std::endl;
-		warehouse * w = new warehouse(name, startDate);
-		warehouses[name] = *w;
+		warehouse *w = new warehouse(name, startDate);
+		warehouses->operator[](name) = w;
 	}
-	void data_helper::build_items(std::string input){
+
+	/** Parses data from the text file and adds food items 
+	  * to the items map
+	  */
+	void data_helper::add_items(std::string input){
 		std::istringstream is(input);
 
 		// Create strings to hold various data that will be
@@ -72,11 +83,14 @@ namespace inventory {
 		int n = boost::lexical_cast<int>(life);
 
 		// Add data to the data structures
-		codeNames[upc] = name;
-		shelfLife[upc] = n; 
+		codeNames->operator[](upc) = name;
+		shelfLife->operator[](upc) = n;
 	
 	}
-	void data_helper::build_date(std::string input){
+
+	/** Parses data from the text file to retrieve the start date
+	  */
+	void data_helper::add_date(std::string input){
 		std::istringstream is(input);
 
 		std::string temp;
@@ -92,9 +106,10 @@ namespace inventory {
 			count++;	
 		}
 	}
-	void data_helper::build_request(std::string line){
-	/*	std::istringstream is(line);
+	void data_helper::add_request(std::string line){
+		std::istringstream is(line);
 
+		// Variables to hold the UPC, quantity requested, and name of warehouse
 		std::string upc;
 		std::string quant;
 		std::string wh;
@@ -103,20 +118,20 @@ namespace inventory {
 		is >> quant;
 		is >> wh;
 		
-		int n = boost::lexical_cast<int>(quant); */
-/*		
-		if(!warehouses.contains(wh)){
-			warehouse w(wh, startDate);
-			warehouses[wh] = w;
+		int n = boost::lexical_cast<int>(quant); 
+
+		if( warehouses->find(wh) == warehouses->end() ){
+			warehouse *w = new warehouse(wh, startDate);
+			warehouses->operator[](wh) = w;
 		}
 		else {
-			warehouse w = warehouses[wh];
-			w.request(upc, n);
+			warehouse *w = warehouses->operator[](wh);
+			w->request(upc, n);
 		}
-		*/
+		
 	}
-	void data_helper::build_receive(std::string line){
-	/*	std::istringstream is(line);
+	void data_helper::add_receive(std::string line){
+		std::istringstream is(line);
 
 		std::string upc;
 		std::string quant;
@@ -129,21 +144,21 @@ namespace inventory {
 		int n = boost::lexical_cast<int>(quant);
 		
 
-		warehouse w = warehouses[wh];
-		w.receive(upc, n);
-		item food(upc, shelfLife[upc], n);
+		warehouse *w = warehouses->operator[](wh);
+		w->receive(upc, shelfLife->operator[](upc), n);
+		item *food = new item(upc, shelfLife->operator[](upc), n);
 
-		w.add_item(food); */
+		w->add_item(*food); 
 	}
-	void data_helper::set_start(std::string sdate){
-		startDate = sdate;
+	void data_helper::set_start(std::string sDate){
+		this->startDate = sDate;
 	}
 	//------------------ DEBUG METHOD DEFINITIONS --------//
 	int data_helper::get_shelflife(std::string upc){
-		return shelfLife[upc]; 
+		return shelfLife->operator[](upc); 
 	}
 	std::string data_helper::get_code(std::string upc){
-		return codeNames[upc];
+		return codeNames->operator[](upc);
 	}
 	std::string data_helper::get_startdate(){
 		return startDate;
