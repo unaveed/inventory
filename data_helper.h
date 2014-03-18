@@ -11,13 +11,13 @@ namespace inventory {
 	class data_helper {
 		private:
 			// Maps the UPC to the name of the product
-			std::map<std::string, std::string> *codeNames;
+			std::map<std::string, std::string> codeNames;
 
 			// Maps the UPC to the shelf life
-			std::map<std::string, int> *shelfLife;
+			std::map<std::string, int> shelfLife;
 
 			// Maps warehouses to their names
-			std::map<std::string, warehouse*> *warehouses;
+			std::map<std::string, warehouse*> warehouses;
 			std::string startDate;
 		public:
 			data_helper();

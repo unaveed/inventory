@@ -31,7 +31,7 @@ namespace inventory {
 
 		std::cout << name << std::endl;
 		warehouse *w = new warehouse(name, startDate);
-		warehouses->operator[](name) = w;
+		warehouses.insert(std::pair<std::string, warehouse*> (name, w) );
 	}
 
 	/** Parses data from the text file and adds food items 
@@ -76,6 +76,7 @@ namespace inventory {
 			// next word
 			else{
 				is >> temp;
+				std::cout << temp << std::endl;
 			}
 			count++;
 		}
@@ -83,8 +84,9 @@ namespace inventory {
 		int n = boost::lexical_cast<int>(life);
 
 		// Add data to the data structures
-		codeNames->operator[](upc) = name;
-		shelfLife->operator[](upc) = n;
+		codeNames.insert(std::pair<std::string, std::string> (upc, name) );
+		shelfLife.insert(std::pair<std::string, int> (upc, n) );
+		/* shelfLife->operator[](upc) = n; */
 	
 	}
 
@@ -120,12 +122,12 @@ namespace inventory {
 		
 		int n = boost::lexical_cast<int>(quant); 
 
-		if( warehouses->find(wh) == warehouses->end() ){
+		if( warehouses.find(wh) == warehouses.end() ){
 			warehouse *w = new warehouse(wh, startDate);
-			warehouses->operator[](wh) = w;
+			warehouses.insert(std::pair<std::string, warehouse*> (wh, w) );
 		}
 		else {
-			warehouse *w = warehouses->operator[](wh);
+			warehouse *w = warehouses[wh];
 			w->request(upc, n);
 		}
 		
@@ -144,23 +146,26 @@ namespace inventory {
 		int n = boost::lexical_cast<int>(quant);
 		
 
-		warehouse *w = warehouses->operator[](wh);
-		w->receive(upc, shelfLife->operator[](upc), n);
-		item *food = new item(upc, shelfLife->operator[](upc), n);
+		warehouse *w = warehouses[wh];
+		w->receive(upc, shelfLife[upc], n); 
+		item *food = new item(upc, shelfLife[upc], n );
 
-		w->add_item(*food); 
+		w->add_item(*food);
 	}
 	void data_helper::set_start(std::string sDate){
 		this->startDate = sDate;
 	}
 	//------------------ DEBUG METHOD DEFINITIONS --------//
 	int data_helper::get_shelflife(std::string upc){
-		return shelfLife->operator[](upc); 
+		return 0;
+		/* return shelfLife->operator[](upc); */ 
 	}
 	std::string data_helper::get_code(std::string upc){
-		return codeNames->operator[](upc);
+		return "Hello";
+		/* return codeNames->operator[](upc); */
 	}
 	std::string data_helper::get_startdate(){
-		return startDate;
+		return "Hello";
+		/* return startDate; */
 	}
 }
