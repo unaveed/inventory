@@ -31,6 +31,7 @@ int main  (int argc, char* argv[]) {
 				// PLACE HOLDER FOR CREATING START DATE
 				cout << "Create start date" << endl;
 				helper->add_date(line);
+				helper->get_startdate();
 			}
 			if(line.substr(0,9) == "Warehouse"){
 				// PLACE HOLDER FOR THE WAREHOUSE METHOD
@@ -58,6 +59,9 @@ int main  (int argc, char* argv[]) {
 			}
 			cout << line << endl;
 		}
+	}
+	else {
+		fprintf(stderr, "Please provide a data file to be read from.\n");
 	}
 	return 0;
 }

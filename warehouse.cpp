@@ -18,16 +18,14 @@ namespace inventory
 	 * a name to the warehouse and its
 	 * inventory is initially set to 0.
 	 */ 
-	warehouse::warehouse (const std::string location, std::string startDate){
-	this->name = location;
-	//this->d = boost::gregorian::from_us_string(startDate);
-	this->currentDate = startDate;
-
+	warehouse::warehouse (const std::string location){
+		this->name = location;
+		this->currentDate = "";
 	}
 
-	  /* Do we need a destructor?
+	//TODO: Implement a destructor
 	warehouse::~warehouse(){
-	} */
+	}
 
 	/**
 	 * Takes in a positive number of received or requested products to
@@ -64,8 +62,9 @@ namespace inventory
 	 * the items from the inventory.
 	 */
 	void warehouse::request(std::string upc, int quantity){
-	  	  
-	  int current = inventory[upc]; // retrieve current inventory count of item
+	  // retrieve current inventory count of item
+	  int current = inventory[upc]; 	  
+	  
 	  // Check if more quantity is being requested than is in stock
 	  // if this is the case, add to transactions the number that is 
 	  // actually in stock
@@ -74,30 +73,39 @@ namespace inventory
 	  else
 	  	add_transactions(quantity);
 
-	  int result = current - quantity;   // subtract request amt from inventory
-	  if(result < 0) // If quantity of item is negative, set it to zero
-		result = 0;
-	  inventory[upc] = result; // set the inventory value again
-	}
+	  // subtract request amt from inventory
+	  int result = current - quantity;   	  
+	  
+	  // If quantity of item is negative, set it to zero
+	  if(result < 0) 		
+	  	result = 0;
+	  
+	  	// set the inventory value again
+	  	inventory[upc] = result; 
+	  }
 
 	/** Increments the date on all items in inventory
 	 * and removes expired items from the warehouse
 	 * inventory.
 	 */
+	 // TODO: Implement the function 
 	void warehouse::next_day(){
 	// Increment the day by one
-	  date d(currentDate);
+	/*  date d(currentDate);
 	  d.add_day();
 	  currentDate = d.get_date();
+	*/
+			
 	}
 
-	/**
-	 * ======================FOR DEBUGGING
-	 */
-	int warehouse::get_num(std::string upc)
-	{
-	  int result = inventory[upc];
-	  return result;  
+	bool warehouse::in_stock(std::string upc){
+		int result = inventory[upc];
+
+		return result > 0;
+	}
+
+	void warehouse::add_item(item foodItem){
+		foodItems.push_back(foodItem);	
 	}
 
 	/** Checks the inventory to see which day had the
@@ -127,17 +135,21 @@ namespace inventory
 			}
 		}
 
-		return result;
+		//return result;
+		return currentDate;
 	}
 
-	bool warehouse::in_stock(std::string upc){
-		int result = inventory[upc];
-
-		return result > 0;
+	void warehouse::set_date(const std::string today){
+		this->currentDate = today;		
 	}
 
-	void warehouse::add_item(item foodItem){
-		foodItems.push_back(foodItem);	
+	/**
+	 * ======================FOR DEBUGGING
+	 */
+	int warehouse::get_num(std::string upc)
+	{
+	  int result = inventory[upc];
+	  return result;  
 	}
 	
 }

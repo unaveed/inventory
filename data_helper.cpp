@@ -30,7 +30,7 @@ namespace inventory {
 		is >> name;
 
 		std::cout << name << std::endl;
-		warehouse *w = new warehouse(name, startDate);
+		warehouse *w = new warehouse(name);
 		warehouses.insert(std::pair<std::string, warehouse*> (name, w) );
 	}
 
@@ -107,7 +107,14 @@ namespace inventory {
 			}
 			count++;	
 		}
+
+		// Loop through and set the start date for every warehouse
+		typedef std::map<std::string, warehouse*>::iterator it_type;
+		for(it_type iterator = warehouses.begin(); iterator != warehouses.end(); iterator++){
+			iterator->second->set_date(startDate);	
+		}
 	}
+
 	void data_helper::add_request(std::string line){
 		std::istringstream is(line);
 
@@ -123,7 +130,7 @@ namespace inventory {
 		int n = boost::lexical_cast<int>(quant); 
 
 		if( warehouses.find(wh) == warehouses.end() ){
-			warehouse *w = new warehouse(wh, startDate);
+			warehouse *w = new warehouse(wh);
 			warehouses.insert(std::pair<std::string, warehouse*> (wh, w) );
 		}
 		else {
@@ -158,14 +165,16 @@ namespace inventory {
 	//------------------ DEBUG METHOD DEFINITIONS --------//
 	int data_helper::get_shelflife(std::string upc){
 		return 0;
-		/* return shelfLife->operator[](upc); */ 
 	}
 	std::string data_helper::get_code(std::string upc){
 		return "Hello";
-		/* return codeNames->operator[](upc); */
 	}
 	std::string data_helper::get_startdate(){
-		return "Hello";
-		/* return startDate; */
+		typedef std::map<std::string, warehouse*>::iterator it_type;
+		for(it_type iterator = warehouses.begin(); iterator != warehouses.end(); iterator++){
+			std::string temp = iterator->second->get_busiest_day();
+			std::cout << "hello and date is: " << temp << std::endl;
+		}
+		return startDate;
 	}
 }

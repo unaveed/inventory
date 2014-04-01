@@ -22,8 +22,8 @@ std::string name;
 
 
 public:
-warehouse(const std::string location, std::string startDate); // Constructor
-//~warehouse();
+warehouse(const std::string location); // Constructor
+~warehouse();
 void add_item(item food);
 void add_transactions(int num);
 void receive(std::string upc, int shelfLife, int quantity);
@@ -32,6 +32,7 @@ void request(std::string upc, int quantity);
 void next_day();
 std::string get_busiest_day();
 bool in_stock(std::string);
+void set_date(const std::string);
 //================FOR DEBUGGING
  int get_num(std::string upc);
 };
