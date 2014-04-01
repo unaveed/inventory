@@ -14,7 +14,7 @@ namespace inventory
 
 class warehouse {
 private:
-std::string name;
+ std::string name;
  std::map<std::string, int> inventory;// UPC to amt. of goods
  std::vector<item> foodItems;
  std::map<std::string, int> transactions;
@@ -22,20 +22,20 @@ std::string name;
 
 
 public:
-warehouse(const std::string location); // Constructor
-~warehouse();
-void add_item(item food);
-void add_transactions(int num);
-void receive(std::string upc, int shelfLife, int quantity);
-void request(std::string upc, int quantity);
-// void check_expiration(); // We don't need this; next_day does it
-void next_day();
-std::string get_busiest_day();
-bool in_stock(std::string);
-void set_date(const std::string);
+ warehouse(const std::string location); // Constructor
+ ~warehouse();
+ void add_item(item food);
+ void add_transactions(int num);
+ void receive(std::string upc, int shelfLife, int quantity);
+ void request(std::string upc, int quantity);
+ // void check_expiration(); // We don't need this; next_day does it
+ void next_day();
+ std::string get_busiest_day();
+ bool in_stock(std::string);
+ void set_date(const std::string);
 //================FOR DEBUGGING
  int get_num(std::string upc);
-};
+ };
 }
 
 #endif

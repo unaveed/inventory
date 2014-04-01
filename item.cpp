@@ -45,12 +45,12 @@ namespace inventory
 	  return expirationDate;
 	  } */
 
-	void item::decrement_shelfLife()
+	void item::decrement_shelf_life()
 	{
 	  --shelfLife;
 	}
 
-	int item::get_shelfLife()
+	int item::get_shelf_life()
 	{
 	  return shelfLife;
 	}

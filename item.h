@@ -20,8 +20,8 @@ public:
 
   std::string get_expiration_date() const;
   int get_quantity() const;
-  int get_shelfLife();
-  void decrement_shelfLife();
+  int get_shelf_life();
+  void decrement_shelf_life();
 
   // std::string get_name(); //necessary? 
 
