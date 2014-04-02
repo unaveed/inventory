@@ -26,7 +26,11 @@ namespace inventory
 	{
 	  //  delete stuff!
 	} */
-
+	
+	std::string item::get_upc() const {
+		return upc; 	
+	}
+	
 	 /* return the number of items with this exp date */
 	int item::get_quantity() const
 	{

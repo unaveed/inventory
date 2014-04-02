@@ -56,9 +56,9 @@ int main  (int argc, char* argv[]) {
 			if(line.substr(0,3) == "End"){
 				// PLACE HOLDER FOR ENDING PROGRAM AND GENERATING REPORT
 				cout << "Generate report here" << endl;
-				cout << "Unstocked Products:" << endl;
-				cout << "" << endl;
-				cout << "Fully-Stocked Products:" << endl;
+				cout << "Unstocked Products:\n" << endl;
+				cout << "Fully-Stocked Products:\n" << endl;
+				helper->get_busiest_days();
 			}
 			cout << line << endl;
 		}

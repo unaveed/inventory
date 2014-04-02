@@ -27,6 +27,7 @@ namespace inventory {
 			void next_day();
 			void add_request(std::string);
 			void add_receive(std::string);
+			void get_busiest_days();
 			void set_start(std::string);
 			//----------- DEDBUG METHODS BELOW ------------//
 			int get_shelflife(std::string upc);

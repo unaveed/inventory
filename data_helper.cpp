@@ -116,6 +116,7 @@ namespace inventory {
 	}
 
 	void data_helper::next_day(){
+		
 		for(std::map<std::string, warehouse*>::iterator it = warehouses.begin(); it != warehouses.end(); ++it){			
 			it->second->next_day();	
 		}
@@ -165,6 +166,15 @@ namespace inventory {
 
 		w->add_item(*food);
 	}
+
+	void data_helper::get_busiest_days(){
+		std::cout << "Busiest days:" << std::endl;
+
+		typedef std::map<std::string, warehouse*>::iterator it_type;
+		for(it_type iterator = warehouses.begin(); iterator != warehouses.end(); iterator++){
+			std::cout << iterator->second->get_busiest_day() << std::endl;	
+		}
+	}
 	void data_helper::set_start(std::string sDate){
 		this->startDate = sDate;
 	}
@@ -176,11 +186,13 @@ namespace inventory {
 		return "Hello";
 	}
 	std::string data_helper::get_startdate(){
+		/*
 		typedef std::map<std::string, warehouse*>::iterator it_type;
 		for(it_type iterator = warehouses.begin(); iterator != warehouses.end(); iterator++){
 			std::string temp = iterator->second->get_busiest_day();
 			std::cout << "hello and date is: " << temp << std::endl;
 		}
+		*/
 		return startDate;
 	}
 }

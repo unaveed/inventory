@@ -19,6 +19,7 @@ public:
     /*~item(); // Destructor */
 
   std::string get_expiration_date() const;
+  std::string get_upc() const;
   int get_quantity() const;
   int get_shelf_life();
   void decrement_shelf_life();

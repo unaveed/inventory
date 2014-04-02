@@ -4,6 +4,7 @@
 ********/
 
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <map>
 #include "warehouse.h"
@@ -33,10 +34,14 @@ namespace inventory
 	 */
 	void warehouse::add_transactions(int num)
 	{
-	  //==============We need to convert from a gregorian date to a string!
-	  int trans = transactions[currentDate]; // retrieve the day's transactions
-	  int result = num + trans; // add passed-in transactions to total
-	  transactions[currentDate] = result; // assign new value back into transactions
+	  // retrieve the day's transactions
+	  int trans = transactions[currentDate];
+	  
+	  // add passed-in transactions to total
+	  int result = num + trans; 
+	
+	  // assign new value back into transactions
+	  transactions[currentDate] = result; 	
 	}
 
 	/** Takes in a receive request for incoming items.
@@ -104,6 +109,22 @@ namespace inventory
 			
 			// TODO: remove the amount expired from total inventory
 			if(foodItems[i].get_shelf_life() == 0){
+				{
+					// Get upc, amount expired, and current amount 
+					// from the expired item.
+					std::string item_upc = foodItems[i].get_upc();
+					int amount = foodItems[i].get_quantity();
+					int currentAmount = inventory[item_upc];
+			
+					currentAmount -= amount;
+					
+					// Prevent negative quantity from being stored
+					// in inventory
+					if(currentAmount < 0)
+						inventory[item_upc] = 0;
+					else
+						inventory[item_upc] = currentAmount;
+				}	
 				foodItems.erase(foodItems.begin()+i);
 			}
 			else
@@ -123,33 +144,56 @@ namespace inventory
 
 	/** Checks the inventory to see which day had the
 	  * most combined requests and receives. Returns the
-      * date the fulfills this requirement. In the case of
+      * warehouse name, date, and number of transactions
+	  * that fulfill this requirement. In the case of
 	  * ties, the newer date is returned.
 	  */
 	std::string warehouse::get_busiest_day(){
-		typedef std::map<std::string, int>::iterator it_type;
-
 		// Holds the last value
 		int last = 0;
 
-		// Holds UPC for the busiest day
-		std::string result;
+		// Holds the day with the most transactions
+		std::string day;
+
+		// Holds Warehouse name, date, and transaction amount
+		// for the busiest day
+		std::string result = name;
 
 		// Checks two values of the hashmap against eachother
+		typedef std::map<std::string, int>::iterator it_type;
 		for(it_type iterator = transactions.begin(); iterator != transactions.end(); iterator++){
 			int compare = iterator->second;
-			if(compare > last){
-				result = iterator -> first;
-				last = iterator-> second;
-			}
-			if(compare == last){
-				// Do something
 
+			// If the current date has more transactions than 
+			// the previous date, the pertinent information
+			// is stored in result
+			if(compare > last){
+				day = iterator->first;
+				last = iterator->second;
+			}
+
+			// If two dates have the same number of 
+			// transactions, the newer dates information
+			// is stored in result
+			if(compare == last){
+				// TODO: Pick the newer date 
+				
 			}
 		}
-
-		//return result;
-		return currentDate;
+		
+		// Convert transaction number to
+		// a string
+		std::ostringstream convert;
+		convert << last;
+	
+		// Format the result to the function
+		// contract requirements
+		result.append(" ");
+		result.append(day);
+		result.append(" ");
+		result.append(convert.str());
+		
+		return result;
 	}
 
 	void warehouse::set_date(const std::string today){
