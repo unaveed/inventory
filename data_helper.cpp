@@ -90,8 +90,9 @@ namespace inventory {
 	
 	}
 
-	/** Parses data from the text file to retrieve the start date
-	  */
+	/* Parses data from the text file to retrieve start
+	 * and store it in the startDate member.
+	 */
 	void data_helper::add_date(std::string input){
 		std::istringstream is(input);
 
@@ -115,6 +116,9 @@ namespace inventory {
 		}
 	}
 
+	/* Calls the next_day function on each warehouse in the
+	 * warehouses map.
+	 */
 	void data_helper::next_day(){
 		
 		for(std::map<std::string, warehouse*>::iterator it = warehouses.begin(); it != warehouses.end(); ++it){			
@@ -122,6 +126,12 @@ namespace inventory {
 		}
 	}
 
+	/* Parses receive information from the input string
+	 * into a UPC, food item quantity, and city name.
+	 * The city variable is used to lookup existing warehouses
+	 * by calling warehouse functions to update quantities
+	 * in inventory.
+	 */
 	void data_helper::add_request(std::string line){
 		std::istringstream is(line);
 
@@ -140,6 +150,13 @@ namespace inventory {
 		w->request(upc, n);
 		warehouses[city] = w;
 	}
+
+	/* Parses receive information from the input string
+	 * into a UPC, food item quantity, and city name.
+	 * The city variable is used to lookup existing warehouses
+	 * by calling warehouse functions to update quantities
+	 * in inventory.
+	 */
 	void data_helper::add_receive(std::string line){
 		std::istringstream is(line);
 
@@ -157,7 +174,12 @@ namespace inventory {
 		w->receive(upc, shelfLife[upc], n);
 		warehouses[city] = w;
 	}
-
+	
+	/* Iterates through each warehouse object and calls
+	 * the get_busiest_day() function for the warehouse.
+	 * Prints the results returned by the function called
+	 * upon warehouse.
+	 */
 	void data_helper::get_busiest_days(){
 		std::cout << "Busiest days:" << std::endl;
 
@@ -166,9 +188,14 @@ namespace inventory {
 			std::cout << iterator->second->get_busiest_day() << std::endl;	
 		}
 	}
+
+	/* Initializes the start date for the inventory
+	 * simulation. 
+	 */
 	void data_helper::set_start(std::string sDate){
 		this->startDate = sDate;
 	}
+
 	//------------------ DEBUG METHOD DEFINITIONS --------//
 	int data_helper::get_shelflife(std::string upc){
 		return 0;
