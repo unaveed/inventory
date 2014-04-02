@@ -128,43 +128,34 @@ namespace inventory {
 		// Variables to hold the UPC, quantity requested, and name of warehouse
 		std::string upc;
 		std::string quant;
-		std::string wh;
+		std::string city;
 
 		is >> upc;
 		is >> quant;
-		is >> wh;
+		is >> city;
 		
 		int n = boost::lexical_cast<int>(quant); 
-
-		if( warehouses.find(wh) == warehouses.end() ){
-			warehouse *w = new warehouse(wh);
-			warehouses.insert(std::pair<std::string, warehouse*> (wh, w) );
-		}
-		else {
-			warehouse *w = warehouses[wh];
-			w->request(upc, n);
-		}
-		
+	
+		warehouse *w = warehouses[city];
+		w->request(upc, n);
+		warehouses[city] = w;
 	}
 	void data_helper::add_receive(std::string line){
 		std::istringstream is(line);
 
 		std::string upc;
 		std::string quant;
-		std::string wh;
+		std::string city;
 
 		is >> upc;
 		is >> quant;
-		is >> wh;
+		is >> city;
 
 		int n = boost::lexical_cast<int>(quant);
-		
 
-		warehouse *w = warehouses[wh];
-		w->receive(upc, shelfLife[upc], n); 
-		item *food = new item(upc, shelfLife[upc], n );
-
-		w->add_item(*food);
+		warehouse *w = warehouses[city];
+		w->receive(upc, shelfLife[upc], n);
+		warehouses[city] = w;
 	}
 
 	void data_helper::get_busiest_days(){

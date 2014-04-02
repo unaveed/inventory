@@ -153,7 +153,7 @@ namespace inventory
 		int last = 0;
 
 		// Holds the day with the most transactions
-		std::string day;
+		std::string day = currentDate;
 
 		// Holds Warehouse name, date, and transaction amount
 		// for the busiest day
@@ -164,20 +164,25 @@ namespace inventory
 		for(it_type iterator = transactions.begin(); iterator != transactions.end(); iterator++){
 			int compare = iterator->second;
 
+			// If two dates have the same number of 
+			// transactions, the newer dates information
+			// is stored in result
+			if(compare == last){
+				date *currentDateCompare = new date(day);
+				date *newDateCompare = new date(iterator->first);
+
+				if(currentDateCompare > newDateCompare)
+					day = currentDateCompare->get_date();
+				else
+					day = newDateCompare->get_date();
+			}
+
 			// If the current date has more transactions than 
 			// the previous date, the pertinent information
 			// is stored in result
 			if(compare > last){
 				day = iterator->first;
 				last = iterator->second;
-			}
-
-			// If two dates have the same number of 
-			// transactions, the newer dates information
-			// is stored in result
-			if(compare == last){
-				// TODO: Pick the newer date 
-				
 			}
 		}
 		
