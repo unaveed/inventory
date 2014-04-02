@@ -24,6 +24,7 @@ namespace inventory {
 			void add_warehouse(std::string);
 			void add_items(std::string);
 			void add_date(std::string);
+			void next_day();
 			void add_request(std::string);
 			void add_receive(std::string);
 			void set_start(std::string);

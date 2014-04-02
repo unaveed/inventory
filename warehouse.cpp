@@ -91,17 +91,23 @@ namespace inventory
 	 // TODO: Implement the function 
 	void warehouse::next_day(){
 		// Increment the day by one
-		date d(currentDate);
-		d.add_day();
-		currentDate = d.get_date();
-
+		{
+			date *d = new date(this->currentDate);
+			d->add_day();
+			this->currentDate = d->get_date();
+		}
+		
 		// Iterator through inventory and 
 		// remove expired items.
-		for(std::vector<item>::size_type i = 0; i != foodItems.size(); i++) {
-			foodItems[i]->decrement_shelf_life();
-			if(foodItems[i]->get_shelf_life() == 0){
-				
+		for(std::vector<item>::size_type i = 0; i != foodItems.size(); ){
+			foodItems[i].decrement_shelf_life();
+			
+			// TODO: remove the amount expired from total inventory
+			if(foodItems[i].get_shelf_life() == 0){
+				foodItems.erase(foodItems.begin()+i);
 			}
+			else
+				i++;
 		}
 	}
 

@@ -11,7 +11,7 @@ private:
 	bool is_thirty_one();
 	bool is_leap_year();
 public:
-	date (const std::string);	// Constructor
+	date (std::string);	// Constructor
 	date (const date & other);	// Copy constructor
 	std::string get_date();
 	bool operator>(date &rhs); 

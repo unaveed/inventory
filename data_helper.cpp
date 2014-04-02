@@ -115,6 +115,12 @@ namespace inventory {
 		}
 	}
 
+	void data_helper::next_day(){
+		for(std::map<std::string, warehouse*>::iterator it = warehouses.begin(); it != warehouses.end(); ++it){			
+			it->second->next_day();	
+		}
+	}
+
 	void data_helper::add_request(std::string line){
 		std::istringstream is(line);
 

@@ -9,24 +9,47 @@
 
 namespace inventory 
 {
-date::date (const std::string mdy){
+date::date (std::string mdy){
 	this->month = boost::lexical_cast<int>(mdy.substr(0,2));
 	this->day = boost::lexical_cast<int>(mdy.substr(3,2));
 	this->year = boost::lexical_cast<int>(mdy.substr(6,4));
 }
 
+/* Converts a date object into a 
+ * string in the following format
+ * MM/DD/YYYY. 
+ */
 std::string date::get_date(){
+	// Flag to see if a number is single digits so that
+	// a 0 can be appended to it
+	bool singleDigit = false;
+
+	// Holds the resultant string
 	std::string result;
 	int params[3] = {month, day, year};
+
 	for(int i=0; i < 3; i++){
 		int num = params[i];
+
+		// Set flag if number is single digits
+		if(num < 10)
+			singleDigit = true;
+
 		std::ostringstream convert;
 		convert << num;
-		
+	
+		// Convert integer to a string
 		std::string temp = convert.str();
+
+		// Preappend "0" for digits less than 0
+		if(singleDigit)
+			temp.insert(0, "0");
 		if(i < 2)
 			temp.append("/");
 		result.append(temp);
+
+		// Reset flag value
+		singleDigit = false;
 	}
 	return result;
 }

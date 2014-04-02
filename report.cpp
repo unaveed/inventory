@@ -41,14 +41,17 @@ int main  (int argc, char* argv[]) {
 			if(line.substr(0,8) == "Next day"){
 				// PLACE HOLDER FOR CALLING NEXT_DAY METHOD
 				cout << "next_day() called here" << endl;
+				helper->next_day();
 			}
 			if(line.substr(0, 7) == "Request"){
 				// PLACE HOLDER FOR CALLING REQUESTS
 				cout << "request() called here" << endl;
+				helper->add_request(line.substr(9));
 			}
 			if(line.substr(0,7) == "Receive"){
 				// PLACE HOLDER FOR CALLING RECEIVES
 				cout << "receive() called here" << endl;
+				helper->add_receive(line.substr(9));
 			}
 			if(line.substr(0,3) == "End"){
 				// PLACE HOLDER FOR ENDING PROGRAM AND GENERATING REPORT
