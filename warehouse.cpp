@@ -24,10 +24,6 @@ namespace inventory
 		this->currentDate = "";
 	}
 
-	//TODO: Implement a destructor
-	warehouse::~warehouse(){
-	}
-
 	/**
 	 * Takes in a positive number of received or requested products to
 	 * tally the total number of daily transactions
@@ -49,7 +45,9 @@ namespace inventory
 	 */
 	void warehouse::receive(std::string upc, int shelfLife, int quantity){
 	  //=================Celeste's code -- have a look
-	  add_transactions(quantity); // add number of received items to transaction tally
+	  
+	  // add number of received items to transaction tally
+	  add_transactions(quantity); 
 	 
 	  // Create an item and put it into the item vector
 	  item *a = new item(upc, shelfLife, quantity);
@@ -64,36 +62,38 @@ namespace inventory
 	}
 
 	/** Takes in a request to send out items.Removes
-	 * the items from the inventory.
+	 *  the items from the inventory.
 	 */
 	void warehouse::request(std::string upc, int quantity){
-	  // retrieve current inventory count of item
-	  int current = inventory[upc]; 	  
-	  
-	  // Check if more quantity is being requested than is in stock
-	  // if this is the case, add to transactions the number that is 
-	  // actually in stock
-	  if(quantity > current)
-	  	add_transactions(current);
-	  else
-	  	add_transactions(quantity);
+		// retrieve current inventory count of item
+		int current = inventory[upc];
 
-	  // subtract request amt from inventory
-	  int result = current - quantity;   	  
-	  
-	  // If quantity of item is negative, set it to zero
-	  if(result < 0) 		
-	  	result = 0;
-	  
-	  	// set the inventory value again
-	  	inventory[upc] = result; 
-	  }
+		// Add the amount of items requested to
+		// the transaction count
+		add_transactions(quantity);
+	
+		if(current > 0){
+			// TODO: Take elements out of foodItems
+			remove_item_quantity(upc, quantity);
+		}
+		
+		// Get the amount of inventory left after shipping
+		// out items of given upc
+		int result = current - quantity;
+
+		// Prevent negative numbers from being stored
+		// in the inventory
+		if(result < 0)
+			result = 0;
+
+		// Store new inventory count
+		inventory[upc] = result;
+	}
 
 	/** Increments the date on all items in inventory
 	 * and removes expired items from the warehouse
 	 * inventory.
 	 */
-	 // TODO: Implement the function 
 	void warehouse::next_day(){
 		// Increment the day by one
 		{
@@ -107,7 +107,7 @@ namespace inventory
 		for(std::vector<item>::size_type i = 0; i != foodItems.size(); ){
 			foodItems[i].decrement_shelf_life();
 			
-			// TODO: remove the amount expired from total inventory
+			// Check if the food item at index i is expired	
 			if(foodItems[i].get_shelf_life() == 0){
 				{
 					// Get upc, amount expired, and current amount 
@@ -127,19 +127,59 @@ namespace inventory
 				}	
 				foodItems.erase(foodItems.begin()+i);
 			}
+			// Increment only if food item is not being removed
 			else
 				i++;
 		}
 	}
 
+	/* Returns whether an item of a given UPC is
+	 * in stock. UPC's that are not in the inventory
+	 * are considered out of stock.
+	 */
 	bool warehouse::in_stock(std::string upc){
-		int result = inventory[upc];
-
-		return result > 0;
+		// Check if upc exists in inventory
+		if(inventory.count(upc) == 0)
+			return false;
+		else{
+			bool res = inventory[upc] > 0;
+			return inventory[upc] > 0;
+		}
 	}
 
+	/* May not be needed 
+	 */
 	void warehouse::add_item(item foodItem){
 		foodItems.push_back(foodItem);	
+	}
+
+	/* Removes n quantities of items from foodItems
+	 * matching the upc given by the parameter of the
+	 * same name. Items with 0 quantity are removed
+	 * from foodItems altogether.
+	 */
+	void warehouse::remove_item_quantity(std::string upc, int n){
+		for(std::vector<item>::iterator it = foodItems.begin(); it != foodItems.end(); ){
+			// Check if current foodItem matches the upc
+			if(it->get_upc() == upc){
+				// Check if there are more items to be shipped
+				// than there are in current food item. This
+				// item will be removed from foodItems
+				if(n > it->get_quantity()){
+					n -= it->get_quantity();
+					it = foodItems.erase(it);
+				}
+				else {
+					int quantity = it->get_quantity();
+					quantity -= n;
+					n = 0;
+					it->set_quantity(quantity);
+					break;
+				}
+			}
+			else 
+				++it;
+		}
 	}
 
 	/** Checks the inventory to see which day had the
@@ -175,6 +215,9 @@ namespace inventory
 					day = currentDateCompare->get_date();
 				else
 					day = newDateCompare->get_date();
+
+				delete currentDateCompare;
+				delete newDateCompare;
 			}
 
 			// If the current date has more transactions than 
@@ -201,6 +244,7 @@ namespace inventory
 		return result;
 	}
 
+	/* Sets the current date to today's date */
 	void warehouse::set_date(const std::string today){
 		this->currentDate = today;		
 	}

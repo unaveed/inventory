@@ -19,6 +19,7 @@ namespace inventory {
 			// Maps warehouses to their names
 			std::map<std::string, warehouse*> warehouses;
 			std::string startDate;
+			int warehouse_count;
 		public:
 			data_helper();
 			void add_warehouse(std::string);
@@ -29,6 +30,8 @@ namespace inventory {
 			void add_receive(std::string);
 			void get_busiest_days();
 			void set_start(std::string);
+			void unstocked_products();
+			void fully_stocked_products();
 			//----------- DEDBUG METHODS BELOW ------------//
 			int get_shelflife(std::string upc);
 			std::string get_code(std::string upc);

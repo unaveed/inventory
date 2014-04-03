@@ -15,6 +15,7 @@ namespace inventory {
 		this->shelfLife;
 		this->warehouses;
 		this->startDate;
+		this->warehouse_count = 0;
 	}
 
 	/** Parses the data from the text file and adds a warehouse
@@ -32,6 +33,7 @@ namespace inventory {
 		std::cout << name << std::endl;
 		warehouse *w = new warehouse(name);
 		warehouses.insert(std::pair<std::string, warehouse*> (name, w) );
+		this->warehouse_count++;
 	}
 
 	/** Parses data from the text file and adds food items 
@@ -181,7 +183,7 @@ namespace inventory {
 	 * upon warehouse.
 	 */
 	void data_helper::get_busiest_days(){
-		std::cout << "Busiest days:" << std::endl;
+		std::cout << "\nBusiest days:" << std::endl;
 
 		typedef std::map<std::string, warehouse*>::iterator it_type;
 		for(it_type iterator = warehouses.begin(); iterator != warehouses.end(); iterator++){
@@ -194,6 +196,43 @@ namespace inventory {
 	 */
 	void data_helper::set_start(std::string sDate){
 		this->startDate = sDate;
+	}
+
+	void data_helper::unstocked_products(){
+		std::cout << "\nUnstocked Products:" << std::endl;
+		
+		bool inStock = false;
+
+		typedef std::map<std::string, std::string>::iterator it_type;
+		for(it_type iterator = codeNames.begin(); iterator != codeNames.end(); iterator++){
+			
+			for(std::map<std::string, warehouse*>::iterator it = warehouses.begin(); it != warehouses.end(); ++it){			
+				if(it->second->in_stock(iterator->first))
+					inStock = true;
+			}
+			if(!inStock)
+				std::cout << iterator->first << " " << iterator->second << std::endl;
+			inStock = false;
+		}
+	}
+
+	void data_helper::fully_stocked_products(){
+		std::cout << "\nFully-Stocked Products:" << std::endl;
+
+		bool inStock = true; 
+
+		typedef std::map<std::string, std::string>::iterator it_type;
+		for(it_type iterator = codeNames.begin(); iterator != codeNames.end(); iterator++){
+			
+			for(std::map<std::string, warehouse*>::iterator it = warehouses.begin(); it != warehouses.end(); ++it){			
+				bool val = it->second->in_stock(iterator->first);	
+				if(!it->second->in_stock(iterator->first))
+					inStock = false;
+			}
+			if(inStock)
+				std::cout << iterator->first << " " << iterator->second << std::endl;
+			inStock = true;
+		}
 	}
 
 	//------------------ DEBUG METHOD DEFINITIONS --------//

@@ -35,7 +35,11 @@ namespace inventory
 	int item::get_quantity() const
 	{
 	  return quantity;
-	} 
+	}
+
+	void item::set_quantity(int amount){
+		quantity = amount;
+	}
 
 	 /* We may not need this?
 	string item::get_name()

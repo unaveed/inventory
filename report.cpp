@@ -16,8 +16,6 @@ int main  (int argc, char* argv[]) {
 		string line;
 		
 		ifstream infile(argv[1]);
-		cout << "Report by Umair Naveed and Celleste Hollenbeck" << endl;
-		cout << "" << endl;	
 		while(getline(infile, line)){
 			istringstream is(line);
 			
@@ -55,9 +53,9 @@ int main  (int argc, char* argv[]) {
 			}
 			if(line.substr(0,3) == "End"){
 				// PLACE HOLDER FOR ENDING PROGRAM AND GENERATING REPORT
-				cout << "Generate report here" << endl;
-				cout << "Unstocked Products:\n" << endl;
-				cout << "Fully-Stocked Products:\n" << endl;
+				cout << "Report by Umair Naveed and Celleste Hollenbeck" << endl;
+				helper->unstocked_products();
+				helper->fully_stocked_products();
 				helper->get_busiest_days();
 			}
 			cout << line << endl;

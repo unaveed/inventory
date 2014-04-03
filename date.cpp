@@ -130,8 +130,8 @@ bool date::is_leap_year(){
 bool date::operator> (date &rhs){
 	std::string sd1 = get_date();
 	std::string sd2 = rhs.get_date();
-	
-	int m1 = boost::lexical_cast<int>(sd1.substr(0,1));
+
+	int m1 = boost::lexical_cast<int>(sd1.substr(0,2));
     int m2 = boost::lexical_cast<int>(sd1.substr(3,2));
     int m3 = boost::lexical_cast<int>(sd1.substr(6,4));
 
@@ -148,27 +148,5 @@ bool date::operator> (date &rhs){
 
     return true;
 }
-
-/*
-int main() {
-	std::string dayt = "01/31/2012";
-	date d(dayt);
-	std::cout << d.get_date() << std::endl;
-
-	d.add_day();
-	std::cout << d.get_date() << std::endl;
-	d.add_day();
-	std::cout << d.get_date() << std::endl;
-
-	d.add_day();
-	std::cout << d.get_date() << std::endl;
-
-	d.add_day();
-	std::cout << d.get_date() << std::endl;
-
-	d.add_day();
-	std::cout << d.get_date() << std::endl;
-
-}*/
 }
 

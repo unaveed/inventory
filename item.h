@@ -22,6 +22,7 @@ public:
   std::string get_upc() const;
   int get_quantity() const;
   int get_shelf_life();
+  void set_quantity(int);
   void decrement_shelf_life();
 
   // std::string get_name(); //necessary? 
