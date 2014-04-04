@@ -75,7 +75,6 @@ namespace inventory {
 			// next word
 			else{
 				is >> temp;
-				std::cout << temp << std::endl;
 			}
 			count++;
 		}
@@ -86,8 +85,6 @@ namespace inventory {
 		// Add data to the data structures
 		codeNames.insert(std::pair<std::string, std::string> (upc, name) );
 		shelfLife.insert(std::pair<std::string, int> (upc, n) );
-		/* shelfLife->operator[](upc) = n; */
-	
 	}
 
 	/* Parses data from the text file to retrieve start
@@ -123,18 +120,11 @@ namespace inventory {
 	 * in inventory.
 	 */
 	void data_helper::add_request(std::string line){
-	//	std::istringstream is(line);
-
 		// Variables to hold the UPC, quantity requested, and name of warehouse
 		std::string upc;
 		std::string quant;
 		std::string city;
-/*
-		is >> upc;
-		is >> quant;
-		is >> city;
 		
-*/
 		build_strings(line, upc, quant, city);
 		int n = boost::lexical_cast<int>(quant); 
 	
@@ -155,33 +145,12 @@ namespace inventory {
 		std::string upc;
 		std::string quant;
 		std::string city;
-	//	std::string temp;
-		
-		/*
-		is >> upc;
-		is >> quant;
-		is >> city;
-
-		while(!is.fail()){
-			is >> temp;
-			if(temp != ""){
-				city.append(" ");
-				city.append(temp);
-			}
-			temp = "";
-		}
-
-		if(city[city.size() - 1] == ' ')
-			city.erase(city.size() - 1);
-		*/
 
 		build_strings(line, upc, quant, city);
 
 		int n = boost::lexical_cast<int>(quant);
 		
 		warehouse *w = warehouses[city];
-
-		std::string pleaseGod = w->get_city();
 		w->receive(upc, shelfLife[upc], n);
 		warehouses[city] = w;
 	}
@@ -207,43 +176,61 @@ namespace inventory {
 		this->startDate = sDate;
 	}
 
+	/* Checks each warehouse for which items are
+	 * not in stock. Items that are not in stock in
+	 * any warehouse are printed in the report.
+	 */
 	void data_helper::unstocked_products(){
 		std::cout << "\nUnstocked Products:" << std::endl;
-		
+	
+		// As long as inStock is false, item is not in stock anywhere
 		bool inStock = false;
 
 		typedef std::map<std::string, std::string>::iterator it_type;
 		for(it_type iterator = codeNames.begin(); iterator != codeNames.end(); iterator++){
 			
 			for(std::map<std::string, warehouse*>::iterator it = warehouses.begin(); it != warehouses.end(); ++it){			
+				// If item is in stock in a warehouse, inStock is no longer false and item is not unstocked	
 				if(it->second->in_stock(iterator->first))
 					inStock = true;
 			}
+
 			if(!inStock)
 				std::cout << iterator->first << " " << iterator->second << std::endl;
+			// Reset the value of inStock
 			inStock = false;
 		}
 	}
-
+	
+	/* Checks each warehoues for which items are in stock. Items
+	 * that are in stock in every warehouse are printed in the
+	 * report. 
+	 */
 	void data_helper::fully_stocked_products(){
 		std::cout << "\nFully-Stocked Products:" << std::endl;
-
+		
+		// As long as inStock is true, item is in stock in a warehouse
 		bool inStock = true; 
 
 		typedef std::map<std::string, std::string>::iterator it_type;
 		for(it_type iterator = codeNames.begin(); iterator != codeNames.end(); iterator++){
 			
 			for(std::map<std::string, warehouse*>::iterator it = warehouses.begin(); it != warehouses.end(); ++it){			
-				bool val = it->second->in_stock(iterator->first);	
+				bool val = it->second->in_stock(iterator->first);
+				// If the item is not in stock in a warehouse, inStock is no longer false and item is not fully stocked
 				if(!it->second->in_stock(iterator->first))
 					inStock = false;
 			}
 			if(inStock)
 				std::cout << iterator->first << " " << iterator->second << std::endl;
+			// Reset the value of inStock
 			inStock = true;
 		}
 	}
-
+	
+	/* Builds the strings upc, quant, and city based of the off of the input
+	 * in line. Removes blank space space at the end of line. 
+	 */
 	void data_helper::build_strings(std::string &line, std::string &upc, std::string &quant, std::string &city){
 		std::istringstream is(line);
 		std::string temp;
@@ -273,13 +260,6 @@ namespace inventory {
 		return "Hello";
 	}
 	std::string data_helper::get_startdate(){
-		/*
-		typedef std::map<std::string, warehouse*>::iterator it_type;
-		for(it_type iterator = warehouses.begin(); iterator != warehouses.end(); iterator++){
-			std::string temp = iterator->second->get_busiest_day();
-			std::cout << "hello and date is: " << temp << std::endl;
-		}
-		*/
 		return startDate;
 	}
 }

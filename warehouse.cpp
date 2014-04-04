@@ -1,5 +1,6 @@
 /********
 * Author: Umair Naveed and Celeste Hollenbeck  
+* CS 3505 Warehouse Assignment
 *
 ********/
 
@@ -50,9 +51,7 @@ namespace inventory
 	/** Takes in a receive request for incoming items.
 	 * Adds the items to the inventory.
 	 */
-	void warehouse::receive(std::string upc, int shelfLife, int quantity){
-	  //=================Celeste's code -- have a look
-	  
+	void warehouse::receive(std::string upc, int shelfLife, int quantity){ 
 	  // add number of received items to transaction tally
 	  add_transactions(quantity); 
 	 
@@ -60,8 +59,6 @@ namespace inventory
 	  item *a = new item(upc, shelfLife, quantity);
 	  foodItems.push_back(*a);
 
-	  // Uncomment to debug
-	  //std::cout << a->get_shelfLife() << std::endl;
 
 	  int current = inventory[upc]; // retrieve current inventory count
 	  int result = current + quantity; // add request amount to inventory
@@ -80,7 +77,6 @@ namespace inventory
 		add_transactions(quantity);
 	
 		if(current > 0){
-			// TODO: Take elements out of foodItems
 			remove_item_quantity(upc, quantity);
 		}
 		
@@ -154,8 +150,6 @@ namespace inventory
 		}
 	}
 
-	/* May not be needed 
-	 */
 	void warehouse::add_item(item foodItem){
 		foodItems.push_back(foodItem);	
 	}
@@ -255,19 +249,6 @@ namespace inventory
 	/* Sets the current date to today's date */
 	void warehouse::set_date(const std::string today){
 		this->currentDate = today;		
-	}
-
-	/**
-	 * ======================FOR DEBUGGING
-	 */
-	int warehouse::get_num(std::string upc)
-	{
-	  int result = inventory[upc];
-	  return result;  
-	}
-
-	std::string warehouse::get_city(){
-		return name;
 	}
 	
 }

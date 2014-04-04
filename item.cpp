@@ -20,13 +20,8 @@ namespace inventory
 	  date d(tester);
 	  this->quantity = i_q;
 	 } 
-
-	/* Destructor 
-	item::~item()
-	{
-	  //  delete stuff!
-	} */
 	
+    /* return the upc */
 	std::string item::get_upc() const {
 		return upc; 	
 	}
@@ -37,31 +32,22 @@ namespace inventory
 	  return quantity;
 	}
 
+    /* set the quantity */
 	void item::set_quantity(int amount){
 		quantity = amount;
 	}
 
-	 /* We may not need this?
-	string item::get_name()
-	{
-	  return name;
-	  } */
-
-	  /* We may not need this either? 
-	string item::get_expiration_date() const
-	{
-	  return expirationDate;
-	  } */
-
+    /* take a day off the shelf life */
 	void item::decrement_shelf_life()
 	{
 	  --shelfLife;
 	}
 
+    /* return the shelf life */
 	int item::get_shelf_life()
 	{
 	  return shelfLife;
-	}
+    }
 }
 
 
