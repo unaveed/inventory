@@ -217,8 +217,9 @@ namespace inventory
 			if(compare == last){
 				date *currentDateCompare = new date(day);
 				date *newDateCompare = new date(iterator->first);
-
-				if(currentDateCompare > newDateCompare)
+				
+				//if(currentDateCompare > newDateCompare)
+				if(currentDateCompare->operator>(*newDateCompare))
 					day = currentDateCompare->get_date();
 				else
 					day = newDateCompare->get_date();

@@ -21,22 +21,6 @@ namespace inventory {
 	  * to the warehouses map. 
 	  */
 	void data_helper::add_warehouse(std::string input){
-	/*	std::istringstream is(input);
-		std::string temp;
-		std::string name;
-
-		is >> temp;
-		is >> temp;
-		is >> name;
-
-		while(!is.fail()){
-			is >> temp;
-			name.append(temp);
-		}
-		
-		std::cout << name << std::endl;
-		*/
-
 		std::string name = input.substr(12);
 
 		if(name[name.size() - 1] == ' ')
@@ -70,22 +54,22 @@ namespace inventory {
 			// Found upc, store it in upc
 			if(count == 5){
 				is >> upc;
-//				std::cout << "UPC: " << upc << std::endl;
 			}
-			// Found shelfLife, store it in life var
 			else if(count == 8){
 				is >> life;
-//				std::cout << "And this is the life: " << life << std::endl;
 			}
 			// Found the name of the food item
 			else if(count > 9){
 				is >> piece;
-//				std::cout << "Piece: " << piece << std::endl;
 				
-				// Add each piece to the name variable and
-				// seperate words with spaces
-				name.append(piece);
-				name.append(" ");
+				if(piece != ""){
+					// Add each piece to the name variable and
+					// seperate words with spaces
+					name.append(piece);
+					name.append(" ");
+				}
+
+				piece = "";
 			}
 			// If no relevant data is found, skip to the
 			// next word
@@ -110,20 +94,10 @@ namespace inventory {
 	 * and store it in the startDate member.
 	 */
 	void data_helper::add_date(std::string input){
-		std::istringstream is(input);
+		if(input[input.size() -1] == ' ')
+			input.erase(input.size() - 1);
 
-		std::string temp;
-
-		int count = 1;
-		while(!is.fail()){
-			if(count == 3){
-				is >> startDate;
-			}
-			else {
-				is >> temp;
-			}
-			count++;	
-		}
+		startDate = input.substr(12);
 
 		// Loop through and set the start date for every warehouse
 		typedef std::map<std::string, warehouse*>::iterator it_type;
@@ -205,9 +179,6 @@ namespace inventory {
 
 		int n = boost::lexical_cast<int>(quant);
 		
-		if(city == "West Palm Beach"){
-			std::cout << "True statement" << std::endl;
-		}
 		warehouse *w = warehouses[city];
 
 		std::string pleaseGod = w->get_city();

@@ -141,9 +141,9 @@ bool date::operator> (date &rhs){
 
     if(m23 > m3)
     	return false;
-	if(m22 > m2)
-		return false;
 	if(m21 > m1)
+		return false;
+	if(m22 > m2)
 		return false;
 
     return true;
