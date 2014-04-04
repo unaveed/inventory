@@ -31,7 +31,14 @@ namespace inventory
 	void warehouse::add_transactions(int num)
 	{
 	  // retrieve the day's transactions
-	  int trans = transactions[currentDate];
+	  //int trans = transactions[currentDate];
+		
+		int trans = 0;
+	  	std::map<std::string, int>::iterator it;
+	  	it = transactions.find(currentDate);
+	  	if(it != transactions.end()){
+			trans = transactions[currentDate]; 
+	  	}
 	  
 	  // add passed-in transactions to total
 	  int result = num + trans; 
@@ -256,6 +263,10 @@ namespace inventory
 	{
 	  int result = inventory[upc];
 	  return result;  
+	}
+
+	std::string warehouse::get_city(){
+		return name;
 	}
 	
 }

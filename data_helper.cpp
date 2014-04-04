@@ -15,14 +15,13 @@ namespace inventory {
 		this->shelfLife;
 		this->warehouses;
 		this->startDate;
-		this->warehouse_count = 0;
 	}
 
 	/** Parses the data from the text file and adds a warehouse
 	  * to the warehouses map. 
 	  */
 	void data_helper::add_warehouse(std::string input){
-		std::istringstream is(input);
+	/*	std::istringstream is(input);
 		std::string temp;
 		std::string name;
 
@@ -30,10 +29,21 @@ namespace inventory {
 		is >> temp;
 		is >> name;
 
+		while(!is.fail()){
+			is >> temp;
+			name.append(temp);
+		}
+		
 		std::cout << name << std::endl;
+		*/
+
+		std::string name = input.substr(12);
+
+		if(name[name.size() - 1] == ' ')
+			name.erase(name.size() - 1);
+		
 		warehouse *w = new warehouse(name);
 		warehouses.insert(std::pair<std::string, warehouse*> (name, w) );
-		this->warehouse_count++;
 	}
 
 	/** Parses data from the text file and adds food items 
@@ -41,6 +51,9 @@ namespace inventory {
 	  */
 	void data_helper::add_items(std::string input){
 		std::istringstream is(input);
+
+		if(input[input.size() - 1] == ' ')
+			input.erase(input.size() - 1);
 
 		// Create strings to hold various data that will be
 		// entered into the data structures
@@ -68,7 +81,7 @@ namespace inventory {
 			else if(count > 9){
 				is >> piece;
 //				std::cout << "Piece: " << piece << std::endl;
-
+				
 				// Add each piece to the name variable and
 				// seperate words with spaces
 				name.append(piece);
@@ -82,6 +95,7 @@ namespace inventory {
 			}
 			count++;
 		}
+
 
 		int n = boost::lexical_cast<int>(life);
 
@@ -135,17 +149,19 @@ namespace inventory {
 	 * in inventory.
 	 */
 	void data_helper::add_request(std::string line){
-		std::istringstream is(line);
+	//	std::istringstream is(line);
 
 		// Variables to hold the UPC, quantity requested, and name of warehouse
 		std::string upc;
 		std::string quant;
 		std::string city;
-
+/*
 		is >> upc;
 		is >> quant;
 		is >> city;
 		
+*/
+		build_strings(line, upc, quant, city);
 		int n = boost::lexical_cast<int>(quant); 
 	
 		warehouse *w = warehouses[city];
@@ -160,19 +176,41 @@ namespace inventory {
 	 * in inventory.
 	 */
 	void data_helper::add_receive(std::string line){
-		std::istringstream is(line);
+		//std::istringstream is(line);
 
 		std::string upc;
 		std::string quant;
 		std::string city;
-
+	//	std::string temp;
+		
+		/*
 		is >> upc;
 		is >> quant;
 		is >> city;
 
-		int n = boost::lexical_cast<int>(quant);
+		while(!is.fail()){
+			is >> temp;
+			if(temp != ""){
+				city.append(" ");
+				city.append(temp);
+			}
+			temp = "";
+		}
 
+		if(city[city.size() - 1] == ' ')
+			city.erase(city.size() - 1);
+		*/
+
+		build_strings(line, upc, quant, city);
+
+		int n = boost::lexical_cast<int>(quant);
+		
+		if(city == "West Palm Beach"){
+			std::cout << "True statement" << std::endl;
+		}
 		warehouse *w = warehouses[city];
+
+		std::string pleaseGod = w->get_city();
 		w->receive(upc, shelfLife[upc], n);
 		warehouses[city] = w;
 	}
@@ -233,6 +271,27 @@ namespace inventory {
 				std::cout << iterator->first << " " << iterator->second << std::endl;
 			inStock = true;
 		}
+	}
+
+	void data_helper::build_strings(std::string &line, std::string &upc, std::string &quant, std::string &city){
+		std::istringstream is(line);
+		std::string temp;
+
+		is >> upc;
+		is >> quant;
+		is >> city;
+		
+		while(!is.fail()){
+			is >> temp;
+			if(temp != ""){
+				city.append(" ");
+				city.append(temp);
+			}
+			temp = "";
+		}
+
+		if(city[city.size() - 1] == ' ')
+			city.erase(city.size() - 1);
 	}
 
 	//------------------ DEBUG METHOD DEFINITIONS --------//

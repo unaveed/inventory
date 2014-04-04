@@ -32,6 +32,7 @@ namespace inventory {
 			void set_start(std::string);
 			void unstocked_products();
 			void fully_stocked_products();
+			void build_strings(std::string &, std::string &, std::string &, std::string &);  
 			//----------- DEDBUG METHODS BELOW ------------//
 			int get_shelflife(std::string upc);
 			std::string get_code(std::string upc);

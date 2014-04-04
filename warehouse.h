@@ -29,6 +29,7 @@ public:
  void set_date(const std::string);
 //======FOR DEBUGGING, DELETE ONCE FUNCTIONAL ===//
  int get_num(std::string upc);
+ std::string get_city();
  };
 }
 

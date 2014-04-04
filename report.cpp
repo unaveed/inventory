@@ -14,10 +14,15 @@ int main  (int argc, char* argv[]) {
 		inventory::data_helper * helper = new inventory::data_helper();	
 	
 		string line;
+		string city;
+		string startDate;
 		
 		ifstream infile(argv[1]);
 		while(getline(infile, line)){
 			istringstream is(line);
+
+			if(line[line.size() -1] == '\r')
+				line.erase(line.size() - 1);
 			
 			// Checks the line to see if food item is here.
 			if(line.substr(0,8) == "FoodItem"){
